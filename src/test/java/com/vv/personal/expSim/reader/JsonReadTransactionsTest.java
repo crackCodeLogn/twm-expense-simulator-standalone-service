@@ -17,7 +17,7 @@ class JsonReadTransactionsTest {
         ExpenseSimProto.TransactionList transactionList = readTransactions.builderRead().build();
 
         System.out.println(transactionList);
-        assertEquals(1, transactionList.getTransactionsCount());
+        assertEquals(3, transactionList.getTransactionsCount());
         assertEquals("B1", transactionList.getTransactionsList().get(0).getFrom());
         assertEquals("", transactionList.getTransactionsList().get(0).getTo());
         assertEquals(20210612L, transactionList.getTransactionsList().get(0).getDate());
