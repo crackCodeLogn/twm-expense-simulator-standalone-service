@@ -4,6 +4,10 @@ pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
 release.properties
+.mvn/
+mvn*
+
+# Project
 landing/
 
 # Eclipse
