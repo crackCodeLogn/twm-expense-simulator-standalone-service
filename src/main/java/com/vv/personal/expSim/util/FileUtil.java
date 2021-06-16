@@ -1,6 +1,5 @@
 package com.vv.personal.expSim.util;
 
-import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,6 @@ import java.io.IOException;
  * @since 12/06/21
  */
 public class FileUtil {
-    public static final Gson GSON = new Gson();
     private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
 
     public static String readFile(String fileLocation) {

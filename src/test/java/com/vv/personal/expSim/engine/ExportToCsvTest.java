@@ -3,6 +3,7 @@ package com.vv.personal.expSim.engine;
 import com.vv.personal.expSim.config.BeanStore;
 import com.vv.personal.expSim.reader.JsonReadBanks;
 import com.vv.personal.expSim.reader.JsonReadTransactions;
+import com.vv.personal.expSim.util.FileUtil;
 import com.vv.personal.twm.artifactory.generated.expSim.ExpenseSimProto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,7 +13,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
+import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -48,5 +51,11 @@ public class ExportToCsvTest {
         System.out.println(csv.getAbsolutePath());
         System.out.println(csv.getName());
         assertTrue(csv.exists());
+
+        String[] lines = FileUtil.readFile(csv.getAbsolutePath()).split("\n");
+        Arrays.stream(lines).forEach(System.out::println);
+        assertEquals("20210612,-3880.13,501.00,U,B1,", lines[1]);
+        assertEquals("20210615,-3880.13,441.00,U,B2,Checking 2", lines[3]);
+        csv.delete();
     }
 }

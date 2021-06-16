@@ -7,5 +7,6 @@ package com.vv.personal.expSim.constants;
 public class Constants {
 
     public static final String COMMA = ",";
+    public static final String EMPTY_STR = "";
 
 }

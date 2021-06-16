@@ -1,6 +1,7 @@
 package com.vv.personal.expSim.engine;
 
 import com.vv.personal.expSim.util.ProtoUtil;
+import com.vv.personal.expSim.util.StatementHelperUtil;
 import com.vv.personal.twm.artifactory.generated.expSim.ExpenseSimProto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ public class CoreEngine {
             Long txDate = transaction.getDate();
             String fromBankCode = transaction.getFrom();
             String toBankCode = transaction.getTo();
+            ExpenseSimProto.TxMode txMode = transaction.getMode();
             boolean fromPresent = !fromBankCode.isEmpty();
             boolean toPresent = !toBankCode.isEmpty();
 
@@ -50,8 +52,9 @@ public class CoreEngine {
                 toBank.setBalance(toBank.getBalance() + amount);
                 toBank.setDate(txDate);
             }
+            note = StatementHelperUtil.generateNoteForStatement(fromPresent, fromBankCode, toBankCode, note, txMode);
             ExpenseSimProto.BankList bankListForStatement = ProtoUtil.generateBankListForStatement(bankMap);
-            statementList.addStatements(ProtoUtil.generateStatement(txDate, bankListForStatement));
+            statementList.addStatements(ProtoUtil.generateStatement(txDate, bankListForStatement, note));
         }
         return statementList.build();
     }
