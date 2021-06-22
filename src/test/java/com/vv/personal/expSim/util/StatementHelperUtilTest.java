@@ -13,11 +13,11 @@ class StatementHelperUtilTest {
 
     @Test
     public void testGenerateNoteForStatement() {
-        assertEquals("U,B3,testing note",
-                StatementHelperUtil.generateNoteForStatement(true, "B3", "B5", "testing note", ExpenseSimProto.TxMode.U));
+        assertEquals("U,testing note",
+                StatementHelperUtil.generateNoteForStatement("testing note", ExpenseSimProto.TxMode.U));
 
-        assertEquals("SAL,B5,testing note2",
-                StatementHelperUtil.generateNoteForStatement(false, "B3", "B5", "testing note2", ExpenseSimProto.TxMode.SAL));
+        assertEquals("SAL,testing note2",
+                StatementHelperUtil.generateNoteForStatement("testing note2", ExpenseSimProto.TxMode.SAL));
     }
 
 }

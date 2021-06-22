@@ -54,8 +54,8 @@ public class ExportToCsvTest {
 
         String[] lines = FileUtil.readFile(csv.getAbsolutePath()).split("\n");
         Arrays.stream(lines).forEach(System.out::println);
-        assertEquals("20210612,-3880.13,501.00,U,B1,", lines[1]);
-        assertEquals("20210615,-3880.13,441.00,U,B2,Checking 2", lines[3]);
+        assertEquals("20210612,-3880.13,501.00,B1,,4111.13,U,", lines[1]);
+        assertEquals("20210615,-3880.13,441.00,B2,,10.0,U,Checking 2", lines[3]);
         csv.delete();
     }
 }

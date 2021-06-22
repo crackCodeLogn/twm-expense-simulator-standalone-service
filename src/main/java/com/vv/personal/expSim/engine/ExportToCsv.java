@@ -48,7 +48,8 @@ public class ExportToCsv {
         StringBuilder header = new StringBuilder("Date").append(COMMA);
         String columns = StringUtils.join(bankCodes, COMMA);
         header.append(columns);
-        header.append(COMMA).append("Mode").append(COMMA).append("From/To").append(COMMA).append("Note");
+        header.append(COMMA).append("From").append(COMMA).append("To").append(COMMA)
+                .append("Amount").append(COMMA).append("Mode").append(COMMA).append("Note");
         dataLines.add(header.toString().strip());
 
         //populating lines
@@ -60,6 +61,9 @@ public class ExportToCsv {
                             String.format("%.2f", bankMap.get(code).getBalance()))
                             .collect(Collectors.toList()), COMMA)
             );
+            line.append(COMMA).append(statement.getFrom());
+            line.append(COMMA).append(statement.getTo());
+            line.append(COMMA).append(statement.getAmt());
             line.append(COMMA).append(statement.getNote());
             dataLines.add(line.toString().strip());
         });

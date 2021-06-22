@@ -11,13 +11,17 @@ import java.util.Map;
  */
 public class ProtoUtil {
 
-    public static ExpenseSimProto.Statement generateStatement(Long date, ExpenseSimProto.BankList bankList, String note) {
+    public static ExpenseSimProto.Statement generateStatement(Long date, ExpenseSimProto.BankList bankList, String note,
+                                                              String fromBankCode, String toBankCode, Double amount) {
         Map<String, ExpenseSimProto.Bank> bankMap = new HashMap<>();
         bankList.getBanksList().forEach(bank -> bankMap.put(bank.getCode(), bank));
         return ExpenseSimProto.Statement.newBuilder()
                 .setDate(date)
                 .putAllBankMap(bankMap)
                 .setNote(note)
+                .setFrom(fromBankCode)
+                .setTo(toBankCode)
+                .setAmt(amount)
                 .build();
     }
 

@@ -10,13 +10,12 @@ import static com.vv.personal.expSim.constants.Constants.COMMA;
  */
 public class StatementHelperUtil {
 
-    public static String generateNoteForStatement(boolean fromPresent, String fromCode, String toCode,
-                                                  String note, ExpenseSimProto.TxMode txMode) {
+    public static String generateNoteForStatement(String note, ExpenseSimProto.TxMode txMode) {
         StringBuilder result = new StringBuilder();
         if (txMode != ExpenseSimProto.TxMode.UNRECOGNIZED) result.append(txMode);
         result.append(COMMA);
-        result.append(fromPresent ? fromCode : toCode)
-                .append(COMMA).append(note);
+        result//.append(fromPresent ? fromCode : toCode).append(COMMA)
+                .append(note);
         return result.toString();
     }
 

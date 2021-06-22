@@ -52,9 +52,9 @@ public class CoreEngine {
                 toBank.setBalance(toBank.getBalance() + amount);
                 toBank.setDate(txDate);
             }
-            note = StatementHelperUtil.generateNoteForStatement(fromPresent, fromBankCode, toBankCode, note, txMode);
+            note = StatementHelperUtil.generateNoteForStatement(note, txMode);
             ExpenseSimProto.BankList bankListForStatement = ProtoUtil.generateBankListForStatement(bankMap);
-            statementList.addStatements(ProtoUtil.generateStatement(txDate, bankListForStatement, note));
+            statementList.addStatements(ProtoUtil.generateStatement(txDate, bankListForStatement, note, fromBankCode, toBankCode, amount));
         }
         return statementList.build();
     }
