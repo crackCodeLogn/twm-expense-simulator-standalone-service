@@ -3,8 +3,7 @@ package com.vv.personal.expSim.engine;
 import com.vv.personal.expSim.util.ProtoUtil;
 import com.vv.personal.expSim.util.StatementHelperUtil;
 import com.vv.personal.twm.artifactory.generated.expSim.ExpenseSimProto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,11 +14,11 @@ import java.util.Queue;
  * @author Vivek
  * @since 12/06/21
  */
+@Slf4j
 public class CoreEngine {
-    private final Logger LOGGER = LoggerFactory.getLogger(CoreEngine.class);
 
-    public ExpenseSimProto.StatementList initiateCompute(List<ExpenseSimProto.Bank.Builder> banks, Queue<ExpenseSimProto.Transaction> transactions) {
-        LOGGER.info("Starting processing.");
+    public ExpenseSimProto.StatementList initiateCompute(List<ExpenseSimProto.Bank.Builder> banks, Queue<ExpenseSimProto.Transaction> transactions, String delimiter) {
+        log.info("Starting processing.");
         ExpenseSimProto.StatementList.Builder statementList = ExpenseSimProto.StatementList.newBuilder();
 
         Map<String, ExpenseSimProto.Bank.Builder> bankMap = new HashMap<>();
@@ -35,7 +34,7 @@ public class CoreEngine {
             boolean toPresent = !toBankCode.isEmpty();
 
             if (!fromPresent && !toPresent) {
-                LOGGER.warn("Transaction empty, skipping ahead => [{}]", transaction);
+                log.warn("Transaction empty, skipping ahead => [{}]", transaction);
                 continue;
             }
             ExpenseSimProto.Bank.Builder fromBank = bankMap.getOrDefault(fromBankCode, ProtoUtil.getDefaultBankBuilder());
@@ -52,7 +51,7 @@ public class CoreEngine {
                 toBank.setBalance(toBank.getBalance() + amount);
                 toBank.setDate(txDate);
             }
-            note = StatementHelperUtil.generateNoteForStatement(note, txMode);
+            note = StatementHelperUtil.generateNoteForStatement(note, txMode, delimiter);
             ExpenseSimProto.BankList bankListForStatement = ProtoUtil.generateBankListForStatement(bankMap);
             statementList.addStatements(ProtoUtil.generateStatement(txDate, bankListForStatement, note, fromBankCode, toBankCode, amount));
         }

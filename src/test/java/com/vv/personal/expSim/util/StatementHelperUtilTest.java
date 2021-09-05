@@ -3,6 +3,7 @@ package com.vv.personal.expSim.util;
 import com.vv.personal.twm.artifactory.generated.expSim.ExpenseSimProto;
 import org.junit.jupiter.api.Test;
 
+import static com.vv.personal.expSim.constants.Constants.COMMA;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
@@ -14,10 +15,10 @@ class StatementHelperUtilTest {
     @Test
     public void testGenerateNoteForStatement() {
         assertEquals("U,testing note",
-                StatementHelperUtil.generateNoteForStatement("testing note", ExpenseSimProto.TxMode.U));
+                StatementHelperUtil.generateNoteForStatement("testing note", ExpenseSimProto.TxMode.U, COMMA));
 
         assertEquals("SAL,testing note2",
-                StatementHelperUtil.generateNoteForStatement("testing note2", ExpenseSimProto.TxMode.SAL));
+                StatementHelperUtil.generateNoteForStatement("testing note2", ExpenseSimProto.TxMode.SAL, COMMA));
     }
 
 }

@@ -21,12 +21,12 @@ public class BeanStore {
 
     @Bean
     public JsonReadBanks JsonReadBanks() {
-        return new JsonReadBanks(expenseSimulatorConfig.getBanksFileLocation());
+        return new JsonReadBanks(expenseSimulatorConfig.banksFileLocation());
     }
 
     @Bean
     public JsonReadTransactions JsonReadTransactions() {
-        return new JsonReadTransactions(expenseSimulatorConfig.getTransactionsFileLocation());
+        return new JsonReadTransactions(expenseSimulatorConfig.transactionsFileLocation());
     }
 
     @Bean
@@ -36,7 +36,6 @@ public class BeanStore {
 
     @Bean
     public ExportToCsv ExportToCsv() {
-        return new ExportToCsv(expenseSimulatorConfig.getSimulatorCsvFileLocation());
+        return new ExportToCsv(expenseSimulatorConfig.simulatorCsvFileLocation(), expenseSimulatorConfig.simulatorCsvDelimiter());
     }
-
 }

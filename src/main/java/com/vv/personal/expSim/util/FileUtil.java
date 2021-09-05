@@ -1,7 +1,6 @@
 package com.vv.personal.expSim.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -11,8 +10,8 @@ import java.io.IOException;
  * @author Vivek
  * @since 12/06/21
  */
+@Slf4j
 public class FileUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(FileUtil.class);
 
     public static String readFile(String fileLocation) {
         StringBuilder result = new StringBuilder();
@@ -22,10 +21,8 @@ public class FileUtil {
                 result.append(line.strip()).append("\n");
             }
         } catch (IOException e) {
-            LOGGER.error("Could not builderRead File '{}'. ", fileLocation, e);
+            log.error("Could not builderRead File '{}'. ", fileLocation, e);
         }
         return result.toString();
     }
-
-
 }

@@ -1,39 +1,21 @@
 package com.vv.personal.expSim.config;
 
-import io.quarkus.arc.config.ConfigProperties;
+import io.smallrye.config.ConfigMapping;
+import io.smallrye.config.WithConverter;
 
 /**
  * @author Vivek
  * @since 12/06/21
  */
-@ConfigProperties
-public class ExpenseSimulatorConfig {
+@ConfigMapping(prefix = "expense-simulator")
+public interface ExpenseSimulatorConfig {
 
-    private String banksFileLocation;
-    private String transactionsFileLocation;
-    private String simulatorCsvFileLocation;
+    String banksFileLocation();
 
-    public String getBanksFileLocation() {
-        return banksFileLocation;
-    }
+    String transactionsFileLocation();
 
-    public void setBanksFileLocation(String banksFileLocation) {
-        this.banksFileLocation = banksFileLocation;
-    }
+    String simulatorCsvFileLocation();
 
-    public String getTransactionsFileLocation() {
-        return transactionsFileLocation;
-    }
-
-    public void setTransactionsFileLocation(String transactionsFileLocation) {
-        this.transactionsFileLocation = transactionsFileLocation;
-    }
-
-    public String getSimulatorCsvFileLocation() {
-        return simulatorCsvFileLocation;
-    }
-
-    public void setSimulatorCsvFileLocation(String simulatorCsvFileLocation) {
-        this.simulatorCsvFileLocation = simulatorCsvFileLocation;
-    }
+    @WithConverter(DelimiterInConverter.class)
+    String simulatorCsvDelimiter();
 }

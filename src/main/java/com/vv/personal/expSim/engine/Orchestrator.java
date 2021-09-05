@@ -5,8 +5,7 @@ import com.vv.personal.expSim.config.ExpenseSimulatorConfig;
 import com.vv.personal.twm.artifactory.generated.expSim.ExpenseSimProto;
 import io.quarkus.runtime.Quarkus;
 import io.quarkus.runtime.StartupEvent;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -19,36 +18,36 @@ import java.util.Queue;
  * @author Vivek
  * @since 12/06/21
  */
+@Slf4j
 @ApplicationScoped
 public class Orchestrator {
-    private final Logger LOGGER = LoggerFactory.getLogger(Orchestrator.class);
     @Inject
     public BeanStore beanStore;
     @Inject
     ExpenseSimulatorConfig expenseSimulatorConfig;
 
     void onStart(@Observes StartupEvent event) {
-        LOGGER.info("***Application starting up***");
+        log.info("***Application starting up***");
 
         ExpenseSimProto.BankList.Builder bankBList = beanStore.JsonReadBanks().builderRead();
         ExpenseSimProto.TransactionList transactionList = beanStore.JsonReadTransactions().builderRead().build();
         if (!loadUp(bankBList.build(), transactionList)) {
-            LOGGER.error("Failed to load-up completely. Exiting now!");
+            log.error("Failed to load-up completely. Exiting now!");
             Quarkus.asyncExit();
             return;
         }
-        LOGGER.info("LoadUp complete!");
+        log.info("LoadUp complete!");
 
         ExpenseSimProto.StatementList statements = computeStatements(bankBList, transactionList);
-        LOGGER.debug("Generated Statements =>\n{}", statements);
-        LOGGER.info("Generated [{}] statements", statements.getStatementsCount());
+        log.debug("Generated Statements =>\n{}", statements);
+        log.info("Generated [{}] statements", statements.getStatementsCount());
 
         ExportToCsv exportToCsv = beanStore.ExportToCsv();
         exportToCsv.setBanks(bankBList.getBanksList());
         exportToCsv.setStatementList(statements);
         exportToCsv.export();
 
-        LOGGER.info("*** Shutting Down! ***");
+        log.info("*** Shutting Down! ***");
         Quarkus.asyncExit();
     }
 
@@ -59,7 +58,7 @@ public class Orchestrator {
     public ExpenseSimProto.StatementList computeStatements(ExpenseSimProto.BankList.Builder bankBList, ExpenseSimProto.TransactionList transactionList) {
         List<ExpenseSimProto.Bank.Builder> banks = bankBList.getBanksBuilderList();
         Queue<ExpenseSimProto.Transaction> transactions = new LinkedList<>(transactionList.getTransactionsList());
-        return beanStore.CoreEngine().initiateCompute(banks, transactions);
+        return beanStore.CoreEngine().initiateCompute(banks, transactions, expenseSimulatorConfig.simulatorCsvDelimiter());
     }
 
 }

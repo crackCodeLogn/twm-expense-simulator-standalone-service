@@ -3,16 +3,15 @@ package com.vv.personal.expSim.reader;
 import com.google.protobuf.GeneratedMessageV3;
 import com.google.protobuf.util.JsonFormat;
 import com.vv.personal.expSim.util.FileUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author Vivek
  * @since 12/06/21
  */
+@Slf4j
 public abstract class JsonReader<T extends GeneratedMessageV3.Builder> {
-    private final Logger LOGGER = LoggerFactory.getLogger(JsonReader.class);
     private final String jsonLocation;
     private final String jsonData;
 
@@ -27,12 +26,12 @@ public abstract class JsonReader<T extends GeneratedMessageV3.Builder> {
         try {
             if (!StringUtils.isEmpty(jsonData)) {
                 JsonFormat.parser().ignoringUnknownFields().merge(jsonData, builder);
-                LOGGER.info("Read complete for '{}'", jsonLocation);
+                log.info("Read complete for '{}'", jsonLocation);
             } else {
-                LOGGER.error("Empty data received!");
+                log.error("Empty data received!");
             }
         } catch (Exception e) {
-            LOGGER.error("Failed to read BankList for the simulation. ", e);
+            log.error("Failed to read BankList for the simulation. ", e);
         }
     }
 

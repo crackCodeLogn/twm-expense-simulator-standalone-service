@@ -2,9 +2,8 @@ package com.vv.personal.expSim.engine;
 
 import com.google.common.collect.Lists;
 import com.vv.personal.twm.artifactory.generated.expSim.ExpenseSimProto;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -13,30 +12,30 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.vv.personal.expSim.constants.Constants.COMMA;
-
 /**
  * @author Vivek
  * @since 12/06/21
  */
+@Slf4j
 public class ExportToCsv {
-    private final Logger LOGGER = LoggerFactory.getLogger(ExportToCsv.class);
-
     private final File csvLandingFile;
+    private final String delimiter;
+
     private List<ExpenseSimProto.Bank> banks;
     private ExpenseSimProto.StatementList statementList;
 
-    public ExportToCsv(String csvLandingFileLocation) {
+    public ExportToCsv(String csvLandingFileLocation, String delimiter) {
         this.csvLandingFile = new File(String.format("%s/SimulatorResult-%d.csv", csvLandingFileLocation, System.currentTimeMillis()));
+        this.delimiter = delimiter;
     }
 
     public File export() {
         List<String> dataToWrite = generateDataToWrite();
         if (writeCsv(dataToWrite)) {
-            LOGGER.info("CSV generation completed at: {}", csvLandingFile.getAbsolutePath());
+            log.info("CSV generation completed at: {}", csvLandingFile.getAbsolutePath());
             return csvLandingFile;
         }
-        LOGGER.error("CSV generation failed!");
+        log.error("CSV generation failed!");
         return null;
     }
 
@@ -45,26 +44,26 @@ public class ExportToCsv {
         List<String> bankCodes = banks.stream().map(ExpenseSimProto.Bank::getCode).collect(Collectors.toList());
 
         //populating header row
-        StringBuilder header = new StringBuilder("Date").append(COMMA);
-        String columns = StringUtils.join(bankCodes, COMMA);
+        StringBuilder header = new StringBuilder("Date").append(delimiter);
+        String columns = StringUtils.join(bankCodes, delimiter);
         header.append(columns);
-        header.append(COMMA).append("From").append(COMMA).append("To").append(COMMA)
-                .append("Amount").append(COMMA).append("Mode").append(COMMA).append("Note");
+        header.append(delimiter).append("From").append(delimiter).append("To").append(delimiter)
+                .append("Amount").append(delimiter).append("Mode").append(delimiter).append("Note");
         dataLines.add(header.toString().strip());
 
         //populating lines
         statementList.getStatementsList().forEach(statement -> {
-            StringBuilder line = new StringBuilder(String.valueOf(statement.getDate())).append(COMMA);
+            StringBuilder line = new StringBuilder(String.valueOf(statement.getDate())).append(delimiter);
             Map<String, ExpenseSimProto.Bank> bankMap = statement.getBankMapMap();
             line.append(
                     StringUtils.join(bankCodes.stream().map(code ->
-                            String.format("%.2f", bankMap.get(code).getBalance()))
-                            .collect(Collectors.toList()), COMMA)
+                                    String.format("%.2f", bankMap.get(code).getBalance()))
+                            .collect(Collectors.toList()), delimiter)
             );
-            line.append(COMMA).append(statement.getFrom());
-            line.append(COMMA).append(statement.getTo());
-            line.append(COMMA).append(statement.getAmt());
-            line.append(COMMA).append(statement.getNote());
+            line.append(delimiter).append(statement.getFrom());
+            line.append(delimiter).append(statement.getTo());
+            line.append(delimiter).append(statement.getAmt());
+            line.append(delimiter).append(statement.getNote());
             dataLines.add(line.toString().strip());
         });
 
@@ -77,13 +76,13 @@ public class ExportToCsv {
                 try {
                     fileWriter.write(line.strip() + "\n");
                 } catch (IOException ioException) {
-                    LOGGER.error("Error while writing data to CSV. ", ioException);
+                    log.error("Error while writing data to CSV. ", ioException);
                     return false;
                 }
             }
             return true;
         } catch (IOException ioException) {
-            LOGGER.error("Failed to write data to CSV. ", ioException);
+            log.error("Failed to write data to CSV. ", ioException);
         }
         return false;
     }

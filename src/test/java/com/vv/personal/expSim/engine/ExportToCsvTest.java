@@ -1,6 +1,7 @@
 package com.vv.personal.expSim.engine;
 
 import com.vv.personal.expSim.config.BeanStore;
+import com.vv.personal.expSim.config.ExpenseSimulatorConfig;
 import com.vv.personal.expSim.reader.JsonReadBanks;
 import com.vv.personal.expSim.reader.JsonReadTransactions;
 import com.vv.personal.expSim.util.FileUtil;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.io.File;
 import java.util.Arrays;
 
+import static com.vv.personal.expSim.constants.Constants.COMMA;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -27,6 +29,8 @@ public class ExportToCsvTest {
 
     @Mock
     BeanStore beanStore;
+    @Mock
+    ExpenseSimulatorConfig expenseSimulatorConfig;
 
     @InjectMocks
     Orchestrator orchestrator = new Orchestrator();
@@ -34,6 +38,7 @@ public class ExportToCsvTest {
     @Test
     public void testExport() {
         Mockito.when(beanStore.CoreEngine()).thenReturn(new CoreEngine());
+        Mockito.when(expenseSimulatorConfig.simulatorCsvDelimiter()).thenReturn(",");
 
         JsonReadBanks readBanks = new JsonReadBanks("src/test/resources/banks.json");
         ExpenseSimProto.BankList.Builder bankList = readBanks.builderRead();
@@ -43,7 +48,7 @@ public class ExportToCsvTest {
 
         ExpenseSimProto.StatementList statementList = orchestrator.computeStatements(bankList, transactionList);
 
-        ExportToCsv exportToCsv = new ExportToCsv("target");
+        ExportToCsv exportToCsv = new ExportToCsv("target", COMMA);
         exportToCsv.setBanks(bankList.getBanksList());
         exportToCsv.setStatementList(statementList);
         File csv = exportToCsv.export();
