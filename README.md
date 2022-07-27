@@ -4,17 +4,21 @@
 <ul>
     <li>The first date post sorting of transactions will coincide with initial balances supplied in the banks detail. <i>The check is not being done currently to verify all that.</i></li>
     <li>Any accounts which are yet to be opened, pre-fill them with 0 balance from the first day, in the banks input json.</li>
+    <li>Entertains multiple transaction per day. Enter them in the json in sequence.</li>
 </ul>
 
-<u>Current limitations</u>
+<u>Current limitations</u>: N.A.
 <ul>
-    <li>Entertains only 1 transaction per day.</li>
+
+[//]: # (    <li>Entertains only 1 transaction per day.</li>)
 </ul>
 
-<u>Book of work (if time permits)</u>
+<u>Book of work (if time permits)</u>: N.A.
 <ul>
-    <li>Upgrade multiple tx handling per day.</li>
-    <li></li>
+
+[//]: # (    <li>Upgrade multiple tx handling per day.</li>)
+
+[//]: # (    <li></li>)
 </ul>
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
