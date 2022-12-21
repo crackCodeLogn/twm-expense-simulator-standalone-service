@@ -23,7 +23,7 @@
         <guava.version>30.1.1-jre</guava.version>
         <commons3.version>3.12.0</commons3.version>
         <lombok.version>1.18.20</lombok.version>
-        <protobuf.java.util.version>3.17.3</protobuf.java.util.version>
+        <protobuf.java.util.version>3.21.10</protobuf.java.util.version>
     </properties>
     <dependencyManagement>
         <dependencies>
