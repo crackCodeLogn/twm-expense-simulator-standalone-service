@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -26,7 +27,7 @@ public class Orchestrator {
     @Inject
     ExpenseSimulatorConfig expenseSimulatorConfig;
 
-    void onStart(@Observes StartupEvent event) {
+    void onStart(@Observes StartupEvent event) throws IOException {
         log.info("***Application starting up***");
 
         ExpenseSimProto.BankList.Builder bankBList = beanStore.JsonReadBanks().builderRead();

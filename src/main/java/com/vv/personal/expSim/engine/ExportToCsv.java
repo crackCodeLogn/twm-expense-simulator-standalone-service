@@ -1,6 +1,7 @@
 package com.vv.personal.expSim.engine;
 
 import com.google.common.collect.Lists;
+import com.google.common.io.Files;
 import com.vv.personal.twm.artifactory.generated.expSim.ExpenseSimProto;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -19,20 +20,23 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ExportToCsv {
     private final File csvLandingFile;
+    private final File csvCopyLandingFile;
     private final String delimiter;
 
     private List<ExpenseSimProto.Bank> banks;
     private ExpenseSimProto.StatementList statementList;
 
-    public ExportToCsv(String csvLandingFileLocation, String delimiter) {
+    public ExportToCsv(String csvLandingFileLocation, String csvCopyLandingFile, String delimiter) {
         this.csvLandingFile = new File(String.format("%s/SimulatorResult-%d.csv", csvLandingFileLocation, System.currentTimeMillis()));
+        this.csvCopyLandingFile = new File(String.format("%s/SimulatorResult.csv", csvCopyLandingFile));
         this.delimiter = delimiter;
     }
 
-    public File export() {
+    public File export() throws IOException {
         List<String> dataToWrite = generateDataToWrite();
         if (writeCsv(dataToWrite)) {
             log.info("CSV generation completed at: {}", csvLandingFile.getAbsolutePath());
+            Files.copy(csvLandingFile, csvCopyLandingFile);
             return csvLandingFile;
         }
         log.error("CSV generation failed!");

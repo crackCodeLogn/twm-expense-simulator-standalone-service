@@ -16,6 +16,8 @@ public interface ExpenseSimulatorConfig {
 
     String simulatorCsvFileLocation();
 
+    String simulatorCsvCopyFileLocation();
+
     @WithConverter(DelimiterInConverter.class)
     String simulatorCsvDelimiter();
 }

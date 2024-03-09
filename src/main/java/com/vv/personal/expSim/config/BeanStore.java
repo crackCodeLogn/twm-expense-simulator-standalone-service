@@ -36,6 +36,8 @@ public class BeanStore {
 
     @Bean
     public ExportToCsv ExportToCsv() {
-        return new ExportToCsv(expenseSimulatorConfig.simulatorCsvFileLocation(), expenseSimulatorConfig.simulatorCsvDelimiter());
+        return new ExportToCsv(expenseSimulatorConfig.simulatorCsvFileLocation(),
+                expenseSimulatorConfig.simulatorCsvCopyFileLocation(),
+                expenseSimulatorConfig.simulatorCsvDelimiter());
     }
 }

@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 
 import static com.vv.personal.expSim.constants.Constants.COMMA;
@@ -36,7 +37,7 @@ public class ExportToCsvTest {
     Orchestrator orchestrator = new Orchestrator();
 
     @Test
-    public void testExport() {
+    public void testExport() throws IOException {
         Mockito.when(beanStore.CoreEngine()).thenReturn(new CoreEngine());
         Mockito.when(expenseSimulatorConfig.simulatorCsvDelimiter()).thenReturn(",");
 
@@ -48,7 +49,7 @@ public class ExportToCsvTest {
 
         ExpenseSimProto.StatementList statementList = orchestrator.computeStatements(bankList, transactionList);
 
-        ExportToCsv exportToCsv = new ExportToCsv("target", COMMA);
+        ExportToCsv exportToCsv = new ExportToCsv("target", "target", COMMA);
         exportToCsv.setBanks(bankList.getBanksList());
         exportToCsv.setStatementList(statementList);
         File csv = exportToCsv.export();
