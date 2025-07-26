@@ -1,6 +1,6 @@
 package com.vv.personal.expSim.reader;
 
-import com.google.protobuf.GeneratedMessageV3;
+import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.util.JsonFormat;
 import com.vv.personal.expSim.util.FileUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
  * @since 12/06/21
  */
 @Slf4j
-public abstract class JsonReader<T extends GeneratedMessageV3.Builder> {
+public abstract class JsonReader<T extends GeneratedMessage.Builder> {
     private final String jsonLocation;
     private final String jsonData;
 
