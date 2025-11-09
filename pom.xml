@@ -22,8 +22,8 @@
         <lombok.version>1.18.20</lombok.version>
         <gson.version>2.13.1</gson.version>
         <guava.version>33.4.8-jre</guava.version>
-        <protobuf.java.util.version>4.30.2</protobuf.java.util.version>
-        <twm.artifactory.version>1.1.21</twm.artifactory.version>
+        <protobuf.java.util.version>4.31.1</protobuf.java.util.version>
+        <twm.artifactory.version>1.1.22</twm.artifactory.version>
     </properties>
     <dependencyManagement>
         <dependencies>
