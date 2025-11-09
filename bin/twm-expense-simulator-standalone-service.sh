@@ -5,8 +5,15 @@ JAVA_PARAM="-Xmx101m"
 BIN_PATH=$PROM_HOME_PARENT/TWM/$APP_NAME/bin     #PROM-HOME-PARENT :: exported in .bashrc
 # JAR_PATH=$BIN_PATH/../target/$APP_NAME-$APP_VERSION.jar
 JAR_PATH=$BIN_PATH/../target/quarkus-app/quarkus-run.jar
+LANDING_PATH=$BIN_PATH/../landing
 
-APP_PARAMS="-Dexpense-simulator.banks-file-location=${BIN_PATH}/../landing/banks.active.json -Dexpense-simulator.transactions-file-location=${BIN_PATH}/../landing/transactions.active.json -Dexpense-simulator.simulator-csv-file-location=${BIN_PATH}/../landing/"
+APP_PARAMS="-Dexpense-simulator.banks-file-location=${BIN_PATH}/../landing/banks.active.json -Dexpense-simulator.transactions-file-location=${BIN_PATH}/../landing/transactions.active.json -Dexpense-simulator.simulator-csv-file-location=${LANDING_PATH}"
 
 echo "Starting '$APP_NAME' with java param: '$JAVA_PARAM', app params: '$APP_PARAMS' at '$JAR_PATH'"
 java $JAVA_PARAM $APP_PARAMS -jar $JAR_PATH
+
+echo "Copying over the latest simulator result to reach dashboard assets"
+LATEST_SIMULATOR_RESULT=$(ls -t ${LANDING_PATH} | head -n 1)
+echo "Found latest file => $LATEST_SIMULATOR_RESULT"
+cp $LANDING_PATH/$LATEST_SIMULATOR_RESULT $DASHBOARD_UI/public/SimulatorResult.csv
+
